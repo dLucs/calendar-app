@@ -1,8 +1,7 @@
 import React from "react";
-import { generateDates, months } from "../utilities/calendar";
+import { months } from "../utilities/calendar";
 import cn from "../utilities/conditional";
 import { GrFormNext, GrFormPrevious } from "react-icons/gr";
-import dayjs from "dayjs";
 
 export const Calendar = ({
   today,
@@ -10,6 +9,7 @@ export const Calendar = ({
   currentDate,
   setSelectedDay,
   selectedDay,
+  dates,
 }) => {
   const dayNamesArray = ["M", "T", "W", "T", "F", "S", "S"];
   const dayNames = dayNamesArray.map((name, index) => {
@@ -19,31 +19,28 @@ export const Calendar = ({
       </h1>
     );
   });
-  const dates = generateDates(today.month(), today.year()).map(
-    ({ date, currentMonth, today }, index) => {
-      return (
-        <div
-          className="h-14 border-t grid place-content-center text-sm"
-          key={index}
+  const datesMap = dates.map(({ date, currentMonth, today }, index) => {
+    return (
+      <div
+        className="h-14 border-t grid place-content-center text-sm"
+        key={index}
+      >
+        <h1
+          className={cn(
+            selectedDay.toDate().toDateString() === date.toDate().toDateString()
+              ? "bg-slate-600 text-white"
+              : "",
+            currentMonth ? "" : "text-gray-400",
+            today ? "bg-red-600 text-white" : "",
+            "h-10 w-10 grid place-content-center rounded-full hover:bg-slate-600 hover:text-white transition-all cursor-pointer"
+          )}
+          onClick={() => setSelectedDay(date)}
         >
-          <h1
-            className={cn(
-              currentMonth ? "" : "text-gray-400",
-              today ? "bg-red-600 text-white" : "",
-              selectedDay.toDate().toDateString() ===
-                date.toDate().toDateString()
-                ? "bg-slate-600 text-white"
-                : "",
-              "h-10 w-10 grid place-content-center rounded-full hover:bg-slate-600 hover:text-white transition-all cursor-pointer"
-            )}
-            onClick={() => setSelectedDay(date)}
-          >
-            {date.date()}
-          </h1>
-        </div>
-      );
-    }
-  );
+          {date.date()}
+        </h1>
+      </div>
+    );
+  });
 
   return (
     <div className="w-96 h-96">
@@ -75,7 +72,7 @@ export const Calendar = ({
         </div>
       </div>
       <div className="w-full grid grid-cols-7 text-gray-500">{dayNames}</div>
-      <div className="w-full grid grid-cols-7">{dates}</div>
+      <div className="w-full grid grid-cols-7">{datesMap}</div>
     </div>
   );
 };

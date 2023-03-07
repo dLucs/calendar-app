@@ -12,7 +12,11 @@ export const generateDates = (
   // Generate prefix days
 
   for (let i = 1; i < firstDayOfMonth.day(); i++) {
-    datesArray.push({ currentMonth: false, date: firstDayOfMonth.day(i) });
+    datesArray.push({
+      currentMonth: false,
+      date: firstDayOfMonth.day(i),
+      event: "Talk to Mum",
+    });
   }
 
   //Generate current month
@@ -24,6 +28,7 @@ export const generateDates = (
         dayjs().toDate().toDateString(),
       currentMonth: true,
       date: firstDayOfMonth.date(i),
+      event: "call annie",
     });
   }
   // Generate suffix days
@@ -34,7 +39,11 @@ export const generateDates = (
     i <= lastDayOfMonth.date() + remainingDays;
     i++
   ) {
-    datesArray.push({ currentMonth: false, date: lastDayOfMonth.date(i) });
+    datesArray.push({
+      currentMonth: false,
+      date: lastDayOfMonth.date(i),
+      event: "talk to dad",
+    });
   }
   return datesArray;
 };
