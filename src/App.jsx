@@ -5,7 +5,12 @@ import Events from "./components/Events";
 import { generateDates } from "./utilities/calendar";
 const currentDate = dayjs();
 const App = () => {
-  const storedEvents = JSON.parse(localStorage.getItem("events")) || [];
+  const storedEvents = JSON.parse(localStorage.getItem("events")) || [
+    {
+      id: currentDate.toDate().toDateString(),
+      event: [],
+    },
+  ];
   const [today, setToday] = useState(currentDate);
   const [selectedDay, setSelectedDay] = useState(currentDate);
   const [dates, setDates] = useState(
@@ -24,7 +29,7 @@ const App = () => {
     dates.forEach(({ date }) => {
       events.push({
         id: date.toDate().toDateString(),
-        event: "Call whoever",
+        event: ["Call whoever", "buy stuff"],
       });
     });
 
@@ -33,7 +38,7 @@ const App = () => {
   useEffect(() => {
     setEvents((prevEvents) =>
       prevEvents.concat(updateEvents()).reduce((unique, o) => {
-        if (!unique.some((obj) => obj.id === o.id && obj.event === o.event)) {
+        if (!unique.some((obj) => obj.id === o.id)) {
           unique.push(o);
         }
         return unique;
@@ -56,6 +61,7 @@ const App = () => {
         selectedDay={selectedDay}
         dates={dates}
         setDates={setDates}
+        events={events}
       />
       <Events
         selectedDay={selectedDay}

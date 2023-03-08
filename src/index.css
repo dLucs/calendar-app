@@ -1,3 +1,20 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.eventTrue {
+  height: 6px;
+  width: 6px;
+  background-color: #bbb;
+  border-radius: 50%;
+  display: inline-block;
+  margin-left: auto;
+}
+.eventFalse {
+  height: 6px;
+  width: 6px;
+  background-color: white;
+  border-radius: 50%;
+  display: inline-block;
+  margin-left: auto;
+}

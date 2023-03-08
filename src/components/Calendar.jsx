@@ -10,6 +10,7 @@ export const Calendar = ({
   setSelectedDay,
   selectedDay,
   dates,
+  events,
 }) => {
   const dayNamesArray = ["M", "T", "W", "T", "F", "S", "S"];
   const dayNames = dayNamesArray.map((name, index) => {
@@ -25,6 +26,8 @@ export const Calendar = ({
         className="h-14 border-t grid place-content-center text-sm"
         key={index}
       >
+        <div className="eventTrue"></div>
+
         <h1
           className={cn(
             selectedDay.toDate().toDateString() === date.toDate().toDateString()
