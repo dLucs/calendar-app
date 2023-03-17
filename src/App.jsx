@@ -5,12 +5,20 @@ import Events from "./components/Events";
 import { generateDates } from "./utilities/calendar";
 const currentDate = dayjs();
 const App = () => {
-  const storedEvents = JSON.parse(localStorage.getItem("events")) || [
-    {
-      id: currentDate.toDate().toDateString(),
-      event: [],
-    },
-  ];
+  const updateEvents = () => {
+    const events = [];
+
+    dates.forEach(({ date }) => {
+      events.push({
+        id: date.toDate().toDateString(),
+        scheduledEvent: ["lala"],
+      });
+    });
+
+    return events;
+  };
+  const storedEvents = JSON.parse(localStorage.getItem("events")) || [];
+  const [loading, setLoading] = useState(true);
   const [today, setToday] = useState(currentDate);
   const [selectedDay, setSelectedDay] = useState(currentDate);
   const [dates, setDates] = useState(
@@ -19,22 +27,19 @@ const App = () => {
   const [events, setEvents] = useState(storedEvents);
 
   useEffect(() => {
+    setLoading(true);
     setDates(generateDates(today.month(), today.year()));
     setSelectedDay(today);
+
+    setEvents((prevEvents) =>
+      prevEvents.concat(updateEvents()).reduce((unique, o) => {
+        if (!unique.some((obj) => obj.id === o.id)) {
+          unique.push(o);
+        }
+        return unique;
+      }, [])
+    );
   }, [today]);
-
-  const updateEvents = () => {
-    const events = [];
-
-    dates.forEach(({ date }) => {
-      events.push({
-        id: date.toDate().toDateString(),
-        event: ["Call whoever", "buy stuff"],
-      });
-    });
-
-    return events;
-  };
   useEffect(() => {
     setEvents((prevEvents) =>
       prevEvents.concat(updateEvents()).reduce((unique, o) => {
@@ -44,7 +49,9 @@ const App = () => {
         return unique;
       }, [])
     );
+    setLoading(false);
   }, [dates]);
+
   useEffect(() => {
     localStorage.setItem("events", JSON.stringify(events));
   }, [events]);
@@ -62,6 +69,7 @@ const App = () => {
         dates={dates}
         setDates={setDates}
         events={events}
+        loading={loading}
       />
       <Events
         selectedDay={selectedDay}

@@ -11,6 +11,7 @@ export const Calendar = ({
   selectedDay,
   dates,
   events,
+  loading,
 }) => {
   const dayNamesArray = ["M", "T", "W", "T", "F", "S", "S"];
   const dayNames = dayNamesArray.map((name, index) => {
@@ -21,12 +22,24 @@ export const Calendar = ({
     );
   });
   const datesMap = dates.map(({ date, currentMonth, today }, index) => {
+    const datesFind = events.find(
+      (element) => element.id === date.toDate().toDateString()
+    );
+    /*  !loading
+      ? console.log(datesFind.scheduledEvent)
+      : console.log("not loaded"); */
     return (
       <div
         className="h-14 border-t grid place-content-center text-sm"
         key={index}
       >
-        <div className="eventTrue"></div>
+        {!loading && (
+          <div
+            className={
+              datesFind.scheduledEvent.length ? "eventTrue" : "eventFalse"
+            }
+          ></div>
+        )}
 
         <h1
           className={cn(
@@ -62,6 +75,7 @@ export const Calendar = ({
             className="cursor-pointer"
             onClick={() => {
               setToday(currentDate);
+              console.log(loading);
             }}
           >
             Today
