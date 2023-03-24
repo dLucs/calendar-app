@@ -11,7 +11,7 @@ const App = () => {
     dates.forEach(({ date }) => {
       events.push({
         id: date.toDate().toDateString(),
-        scheduledEvent: ["lala"],
+        scheduledEvent: [],
       });
     });
 
@@ -25,6 +25,7 @@ const App = () => {
     generateDates(today.month(), today.year())
   );
   const [events, setEvents] = useState(storedEvents);
+  const [inputE, setInputE] = useState("");
 
   useEffect(() => {
     setLoading(true);
@@ -71,14 +72,19 @@ const App = () => {
         events={events}
         loading={loading}
       />
-      <Events
-        selectedDay={selectedDay}
-        today={today}
-        dates={dates}
-        setDates={setDates}
-        events={events}
-        setEvents={setEvents}
-      />
+      {!loading && (
+        <Events
+          selectedDay={selectedDay}
+          today={today}
+          dates={dates}
+          setDates={setDates}
+          events={events}
+          setEvents={setEvents}
+          inputE={inputE}
+          setInputE={setInputE}
+          loading={loading}
+        />
+      )}
     </div>
   );
 };
