@@ -15,11 +15,8 @@ const Events = ({
   const eventContent = datesFind.scheduledEvent;
   const listItems = !loading
     ? eventContent.map((e) => (
-        <li className="list-none group flex" key={e}>
+        <li className="list-none flex flex-col sm:mx-6 lg:mx-0" key={e}>
           {e}
-          <button className=" mx-6 border-white    hover:border-red-600 hover:text-red-600 text-sm border text-red-300 py-0 px-1 rounded hidden group-hover:block">
-            Delete
-          </button>
         </li>
       ))
     : console.log("not loaded");
@@ -37,20 +34,41 @@ const Events = ({
     );
     setInputE("");
   };
+
+  const deleteEvent = () => {
+    setEvents((oldEvents) =>
+      oldEvents.map((element) => {
+        return element.id === datesFind.id
+          ? {
+              ...element,
+              scheduledEvent: [
+                ...element.scheduledEvent.filter((e) => e === !e),
+              ],
+            }
+          : element;
+      })
+    );
+  };
   return (
     <div className=" h-4/6 w-96 px-5 pt-11 flex flex-col">
       <h1 className="font-semibold self-center lg:self-start">
         Schedule for {selectedDay.toDate().toDateString()}
       </h1>
       <div className=" flex flex-col justify-between h-5/6 items-center lg:items-start">
-        <div
-          className="pt-3"
-          onClick={() => {
-            editEvent();
-          }}
-        >
+        <div className="pt-3 flex flex-col">
           {listItems}
+          {eventContent.length > 0 && (
+            <button
+              onClick={() => {
+                deleteEvent();
+              }}
+              className=" border-white    hover:border-red-600 hover:text-red-600 text-sm border text-red-300 my-8 px-1 rounded "
+            >
+              Clear Events
+            </button>
+          )}
         </div>
+
         <form
           className="w-full max-w-sm"
           onSubmit={(event) => {
